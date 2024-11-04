@@ -33,7 +33,6 @@ function App() {
             ]
           }
         );
-        console.log(response);
         const botResponse = response.data.candidates[0].content.parts[0].text;
         setLoading(false);
         setMessages([...newMessages, { text: botResponse, user: false }]);
@@ -45,12 +44,31 @@ function App() {
     }
   };
 
+  const suggestions = {
+    examples: [
+      "Dame 5 noticias relevantes para alguien que quiera invertir en Nvidia",
+      "¿Cuáles son las métricas clave para evaluar a Tesla en el mercado actual?",
+      "Quiero entender las implicaciones de la subida de tasas de interés en el sector financiero",
+      "¿Qué tendencias de inversión están en auge en el sector de la tecnología?",
+      "Explícame los fundamentos para evaluar acciones de Amazon"
+    ],
+    templates: [
+      "Tengo un perfil de riesgo <bajo, medio, alto>, ¿qué debería analizar más en <técnico, fundamental> para invertir en <tecnología, materias primas, sector financiero>?",
+      "¿Qué sectores sugieres para alguien con interés en <sostenibilidad, alta rentabilidad, bajo riesgo>?",
+      "Quiero mejorar mi diversificación en <acciones, bonos, criptomonedas>, ¿qué estrategias me recomiendas?",
+      "Soy nuevo en la inversión, ¿qué cosas debo entender sobre el análisis <técnico, fundamental>?",
+      "Si quiero invertir en <empresas emergentes, acciones estables>, ¿qué debería tener en cuenta para minimizar riesgos?"
+    ]
+  };
+
   return (
     <>
       <NavBar />
-      <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-r from-green-400 to-blue-500">
+      <div className="flex flex-col items-center bg-gradient-to-r from-green-400 to-blue-500 min-h-screen overflow-y-auto p-12">
         <h1 className="mb-8 font-bold text-[3rem] drop-shadow-lg text-blue-50">Finance Copilot</h1>
-        <div className="bg-white w-full max-w-lg shadow-lg rounded-lg overflow-hidden">
+        
+        {/* Chatbot Container */}
+        <div className="bg-white w-full max-w-lg shadow-lg rounded-lg overflow-hidden mb-6">
           <div className="p-4 h-96 overflow-y-auto">
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.user ? 'justify-end' : 'justify-start'} mb-2`}>
@@ -86,6 +104,29 @@ function App() {
             >
               <FaPaperPlane />
             </button>
+          </div>
+        </div>
+
+        {/* Suggestions Section */}
+        <div className="bg-white w-full max-w-2xl p-6 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold text-gray-700 mb-4">Sugerencias de Prompts</h2>
+          
+          <div>
+            <h3 className="font-semibold text-gray-600">Ejemplos:</h3>
+            <ul className="list-disc list-inside mb-4 text-gray-600">
+              {suggestions.examples.map((example, index) => (
+                <li key={index} className="mb-2">{example}</li>
+              ))}
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="font-semibold text-gray-600">Plantillas:</h3>
+            <ul className="list-disc list-inside text-gray-600">
+              {suggestions.templates.map((template, index) => (
+                <li key={index} className="mb-2">{template}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 import NavBar from './NavBar';
+import ProfileModal from './ProfileModal';
 
 const stockSymbols = [
     { 
@@ -54,28 +55,29 @@ const stockSymbols = [
 const Graphics = () => {
   const [stockData, setStockData] = useState({});
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const fetchStockData = async (symbol) => {
+    try {
+      const response = await axios.get(
+        `https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1mo&interval=1d`
+      );
+      const result = response.data.chart.result[0];
+      const prices = result.indicators.quote[0].close.map((price, index) => ({
+        date: new Date(result.timestamp[index] * 1000).toLocaleDateString(),
+        price,
+      }));
+      setStockData((prevData) => ({
+        ...prevData,
+        [symbol]: prices,
+      }));
+    } catch (error) {
+      console.error(`Error fetching data for ${symbol}:`, error);
+      setError(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchStockData = async (symbol) => {
-      try {
-        const response = await axios.get(
-          `https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1mo&interval=1d`
-        );
-        const result = response.data.chart.result[0];
-        const prices = result.indicators.quote[0].close.map((price, index) => ({
-          date: new Date(result.timestamp[index] * 1000).toLocaleDateString(),
-          price
-        }));
-        setStockData((prevData) => ({
-          ...prevData,
-          [symbol]: prices
-        }));
-      } catch (error) {
-        console.error(`Error fetching data for ${symbol}:`, error);
-        setError(error);
-      }
-    };
-
     stockSymbols.forEach(({ symbol }) => fetchStockData(symbol));
   }, []);
 
@@ -88,10 +90,32 @@ const Graphics = () => {
       : { text: `Trade Short for ${days} days`, color: 'text-red-500' };
   };
 
+  const handleApplyChanges = () => {
+    setStockData({}); // Reset stock data to trigger re-render
+    stockSymbols.forEach(({ symbol }) => fetchStockData(symbol));
+  };
+
   return (
     <>
       <NavBar />
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-400 to-blue-500 py-10 pt-28">
+        
+        {/* Botón de "Ajuste su perfil" */}
+        <button
+          className="bg-white text-blue-500 font-semibold py-2 px-4 rounded shadow-lg hover:bg-blue-500 hover:text-white transition-all mb-6"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Ajuste su perfil
+        </button>
+
+        {/* Modal */}
+        <ProfileModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onApplyChanges={handleApplyChanges}
+        />
+
+        {/* Sección de perfiles de riesgo */}
         {['High Risk Profile', 'Mid Risk Profile', 'Low Risk Profile'].map((riskProfile, idx) => (
           <div key={idx} className="w-full mb-10">
             <h1 className="text-center text-4xl font-bold text-white mb-6">{riskProfile}</h1>
