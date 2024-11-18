@@ -58,24 +58,25 @@ const Graphics = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchStockData = async (symbol) => {
-    try {
-      const response = await axios.get(
-        `https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1mo&interval=1d`
-      );
-      const result = response.data.chart.result[0];
-      const prices = result.indicators.quote[0].close.map((price, index) => ({
-        date: new Date(result.timestamp[index] * 1000).toLocaleDateString(),
-        price,
-      }));
-      setStockData((prevData) => ({
-        ...prevData,
-        [symbol]: prices,
-      }));
-    } catch (error) {
-      console.error(`Error fetching data for ${symbol}:`, error);
-      setError(error);
-    }
-  };
+  try {
+    const response = await axios.get(
+      `http://34.173.131.99:8080/https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1mo&interval=1d`
+    );
+    const result = response.data.chart.result[0];
+    const prices = result.indicators.quote[0].close.map((price, index) => ({
+      date: new Date(result.timestamp[index] * 1000).toLocaleDateString(),
+      price,
+    }));
+    setStockData((prevData) => ({
+      ...prevData,
+      [symbol]: prices,
+    }));
+  } catch (error) {
+    console.error(`Error fetching data for ${symbol}:`, error);
+    setError(error);
+  }
+};
+
 
   useEffect(() => {
     stockSymbols.forEach(({ symbol }) => fetchStockData(symbol));
