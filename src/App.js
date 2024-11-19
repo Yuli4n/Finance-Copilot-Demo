@@ -93,7 +93,7 @@ function App() {
             <input
               type="text"
               className="flex-1 p-2 border border-gray-300 rounded-lg outline-none"
-              placeholder="Ask copilot a finance question..."
+              placeholder="Ask a finance question..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
