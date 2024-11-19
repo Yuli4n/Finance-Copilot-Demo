@@ -18,11 +18,6 @@ const Graphics = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Axios Interceptor para agregar encabezados predeterminados
-  useEffect(() => {
-    axios.defaults.headers.common['Origin'] = 'http://localhost'; // Ajusta si tu origen es diferente
-  }, []);
-
   const fetchStockData = async (symbol) => {
     try {
       console.log(`Fetching data for ${symbol}...`); // Mensaje de depuración
