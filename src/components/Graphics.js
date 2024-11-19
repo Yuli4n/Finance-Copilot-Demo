@@ -60,8 +60,8 @@ const Graphics = () => {
   const fetchStockData = async (symbol) => {
   try {
     const response = await axios.get(
-      `http://34.173.131.99:8080/https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1mo&interval=1d`
-    );
+  `http://34.173.131.99:8080/https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=7d&interval=1d`
+);
     const result = response.data.chart.result[0];
     const prices = result.indicators.quote[0].close.map((price, index) => ({
       date: new Date(result.timestamp[index] * 1000).toLocaleDateString(),
