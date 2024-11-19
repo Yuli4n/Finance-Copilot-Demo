@@ -65,7 +65,7 @@ function App() {
     <>
       <NavBar />
       <div className="flex flex-col items-center bg-gradient-to-r from-green-400 to-blue-500 min-h-screen overflow-y-auto p-12">
-        <h1 className="mb-8 font-bold text-[3rem] drop-shadow-lg text-blue-50">Finance Copilot</h1>
+        <h1 className="mb-8 font-bold text-[3rem] drop-shadow-lg text-blue-50">Investra</h1>
         
         {/* Chatbot Container */}
         <div className="bg-white w-full max-w-lg shadow-lg rounded-lg overflow-hidden mb-6">
