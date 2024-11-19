@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <nav className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg text-white py-4 px-8 flex justify-between items-center fixed top-0 left-0 w-full z-10">
       <div className="font-bold text-2xl">
-        Finance Copilot
+        Investra
       </div>
       <div className="flex space-x-4">
         <Link to="/" className="hover:text-gray-300 transition-colors duration-200">Copilot</Link>
